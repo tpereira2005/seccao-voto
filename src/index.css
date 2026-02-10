@@ -4,34 +4,34 @@
    DESIGN TOKENS — inspired by National Design Studio
    ═══════════════════════════════════════════════ */
 :root {
-  /* Surface colors */
-  --bg: #010104;
-  --surface-1: rgba(255, 255, 255, 0.025);
-  --surface-2: rgba(255, 255, 255, 0.04);
-  --surface-3: rgba(255, 255, 255, 0.06);
-  --border: rgba(255, 255, 255, 0.06);
-  --border-focus: rgba(255, 255, 255, 0.15);
-  --border-accent: rgba(96, 165, 250, 0.25);
+  /* Surface colors — boosted for mobile readability */
+  --bg: #060610;
+  --surface-1: rgba(255, 255, 255, 0.05);
+  --surface-2: rgba(255, 255, 255, 0.08);
+  --surface-3: rgba(255, 255, 255, 0.12);
+  --border: rgba(255, 255, 255, 0.10);
+  --border-focus: rgba(255, 255, 255, 0.22);
+  --border-accent: rgba(96, 165, 250, 0.35);
 
-  /* Text */
+  /* Text — higher contrast */
   --text-1: #ffffff;
-  --text-2: rgba(255, 255, 255, 0.65);
-  --text-3: rgba(255, 255, 255, 0.35);
-  --text-4: rgba(255, 255, 255, 0.18);
+  --text-2: rgba(255, 255, 255, 0.78);
+  --text-3: rgba(255, 255, 255, 0.50);
+  --text-4: rgba(255, 255, 255, 0.30);
 
   /* Accent */
-  --green: #2dd4a0;
-  --green-surface: rgba(45, 212, 160, 0.08);
-  --green-border: rgba(45, 212, 160, 0.2);
-  --amber: #f59e0b;
-  --amber-surface: rgba(245, 158, 11, 0.06);
-  --amber-border: rgba(245, 158, 11, 0.15);
-  --blue: #3b82f6;
-  --blue-surface: rgba(59, 130, 246, 0.08);
-  --blue-border: rgba(59, 130, 246, 0.2);
-  --red: #ef4444;
-  --red-surface: rgba(239, 68, 68, 0.08);
-  --red-border: rgba(239, 68, 68, 0.2);
+  --green: #34d399;
+  --green-surface: rgba(52, 211, 153, 0.12);
+  --green-border: rgba(52, 211, 153, 0.28);
+  --amber: #fbbf24;
+  --amber-surface: rgba(251, 191, 36, 0.10);
+  --amber-border: rgba(251, 191, 36, 0.22);
+  --blue: #60a5fa;
+  --blue-surface: rgba(96, 165, 250, 0.10);
+  --blue-border: rgba(96, 165, 250, 0.25);
+  --red: #f87171;
+  --red-surface: rgba(248, 113, 113, 0.10);
+  --red-border: rgba(248, 113, 113, 0.25);
 
   /* Layout */
   --radius-xs: 6px;
