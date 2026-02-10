@@ -1,12 +1,28 @@
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import SectionForm from './SectionForm'
 import ConfirmModal from './ConfirmModal'
+import StatsPanel from './StatsPanel'
+import { exportJSON, importJSON } from '../utils/importExport'
 
-export default function AdminView({ sections, onAdd, onUpdate, onDelete, onReset }) {
+export default function AdminView({
+    sections,
+    postoName,
+    onAdd,
+    onUpdate,
+    onDelete,
+    onReset,
+    onReplaceAll,
+    totalSearches,
+    uniqueNamesCount,
+    lastSearchTime,
+    onResetStats,
+}) {
     const [editingId, setEditingId] = useState(null)
     const [showAdd, setShowAdd] = useState(false)
-    const [confirmDelete, setConfirmDelete] = useState(null) // section id
+    const [confirmDelete, setConfirmDelete] = useState(null)
     const [confirmReset, setConfirmReset] = useState(false)
+    const [importError, setImportError] = useState(null)
+    const fileInputRef = useRef(null)
 
     const handleSaveEdit = (id, data) => {
         onUpdate(id, data)
@@ -30,29 +46,93 @@ export default function AdminView({ sections, onAdd, onUpdate, onDelete, onReset
         setConfirmReset(false)
     }
 
+    const handleExport = () => {
+        exportJSON(sections, postoName || 'posto')
+    }
+
+    const handleImportClick = () => {
+        setImportError(null)
+        fileInputRef.current?.click()
+    }
+
+    const handleImportFile = async (e) => {
+        const file = e.target.files?.[0]
+        if (!file) return
+        try {
+            const imported = await importJSON(file)
+            onReplaceAll(imported)
+            setImportError(null)
+        } catch (err) {
+            setImportError(err.message)
+        }
+        // Reset input so same file can be re-selected
+        e.target.value = ''
+    }
+
     return (
         <div className="admin-view fade-in">
+            {/* Stats */}
+            <StatsPanel
+                totalSearches={totalSearches}
+                uniqueNamesCount={uniqueNamesCount}
+                lastSearchTime={lastSearchTime}
+                onReset={onResetStats}
+            />
+
             <div className="admin-header">
                 <div>
                     <h2 className="admin-title">Gerir Secções de Voto</h2>
                     <p className="admin-subtitle">{sections.length} secções configuradas</p>
                 </div>
                 <div className="admin-actions">
-                    <button className="btn btn-ghost btn-sm" onClick={() => setConfirmReset(true)}>
+                    <button className="btn btn-ghost btn-sm" onClick={handleExport} title="Exportar JSON">
                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                            <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" />
-                            <path d="M3 3v5h5" />
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                            <polyline points="7 10 12 15 17 10" />
+                            <line x1="12" y1="15" x2="12" y2="3" />
                         </svg>
-                        Repor Original
+                        Exportar
                     </button>
-                    <button className="btn btn-primary btn-sm" onClick={() => setShowAdd(true)}>
+                    <button className="btn btn-ghost btn-sm" onClick={handleImportClick} title="Importar JSON">
                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                            <line x1="12" y1="5" x2="12" y2="19" />
-                            <line x1="5" y1="12" x2="19" y2="12" />
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                            <polyline points="17 8 12 3 7 8" />
+                            <line x1="12" y1="3" x2="12" y2="15" />
                         </svg>
-                        Adicionar
+                        Importar
                     </button>
+                    <input
+                        ref={fileInputRef}
+                        type="file"
+                        accept=".json"
+                        onChange={handleImportFile}
+                        style={{ display: 'none' }}
+                    />
                 </div>
+            </div>
+
+            {importError && (
+                <div className="import-error">
+                    <span>⚠️ {importError}</span>
+                    <button className="icon-btn icon-btn-sm" onClick={() => setImportError(null)}>✕</button>
+                </div>
+            )}
+
+            <div className="admin-toolbar">
+                <button className="btn btn-ghost btn-sm" onClick={() => setConfirmReset(true)}>
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" />
+                        <path d="M3 3v5h5" />
+                    </svg>
+                    Repor Original
+                </button>
+                <button className="btn btn-primary btn-sm" onClick={() => setShowAdd(true)}>
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <line x1="12" y1="5" x2="12" y2="19" />
+                        <line x1="5" y1="12" x2="19" y2="12" />
+                    </svg>
+                    Adicionar
+                </button>
             </div>
 
             {showAdd && (
