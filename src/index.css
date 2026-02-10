@@ -511,8 +511,11 @@ body {
 .range-arrow {
   color: var(--text-4);
   flex-shrink: 0;
-  font-size: 14px;
-  font-family: 'JetBrains Mono', monospace;
+  font-size: 18px;
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  opacity: 0.6;
 }
 
 /* ═══════════════════════════════════════════════
