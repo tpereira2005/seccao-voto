@@ -17,7 +17,7 @@ export default defineConfig({
         background_color: '#0a0a1a',
         display: 'standalone',
         orientation: 'portrait',
-        start_url: '/',
+        start_url: '/seccao-voto/',
         icons: [
           {
             src: 'icons/icon-192.svg',
